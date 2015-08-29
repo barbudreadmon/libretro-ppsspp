@@ -129,6 +129,7 @@ SOURCES_CXX += $(GPUCOMMONDIR)/IndexGenerator.cpp
 SOURCES_C   += $(NATIVEDIR)/ext/libpng17/pngwutil.c
 SOURCES_CXX += $(GPUCOMMONDIR)/TextureDecoder.cpp \
 				$(GPUCOMMONDIR)/PostShader.cpp \
+				$(GPUCOMMONDIR)/GPUDebugInterface.cpp \
 				$(COMMONDIR)/ColorConv.cpp \
 				$(GPUDIR)/Debugger/Breakpoints.cpp \
 				$(GPUDIR)/Debugger/Stepping.cpp \
