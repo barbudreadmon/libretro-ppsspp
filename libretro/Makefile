@@ -74,17 +74,22 @@ ifneq (,$(findstring unix,$(platform)))
 	PLATFORM_EXT := unix
 	LDFLAGS += -lrt -ldl
 
-# Raspberry Pi
-else ifneq (,$(findstring rpi,$(platform)))
+# Raspberry Pi 2
+else ifneq (,$(findstring rpi2,$(platform)))
 	TARGET := $(TARGET_NAME)_libretro.so
-	LDFLAGS += -shared -Wl,--version-script=link.T
-	fpic = -fPIC
-	GLES = 1
-	GL_LIB := -lGLESv2
-	INCFLAGS += -I/opt/vc/include
-	CPUFLAGS += -DARMv5_ONLY 
-	PLATFORM_EXT := unix
+	fpic := -fPIC
+	LDFLAGS += -shared -Wl,--version-script=link.T -Wl,--no-undefined
+	FFMPEGINCFLAGS += -I$(FFMPEGDIR)/linux/$(FFMPEG_ARCH)/include
+	FFMPEGLIBDIR := $(FFMPEGDIR)/linux/$(FFMPEG_ARCH)/lib
+	FFMPEGLDFLAGS += -L$(FFMPEGLIBDIR) -lavformat -lavcodec -lavutil -lswresample -lswscale
+	INCFLAGS += -I. -I/opt/vc/include -I/opt/vc/include/interface/vcos/pthreads/
 	WITH_DYNAREC=arm
+	GLES := 1
+	GL_LIB := -lGLESv2 -lEGL
+	LDFLAGS += -lGLESv2 -lEGL
+	CPUFLAGS += -marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -D__NEON_OPT -mfloat-abi=hard -D__arm__ -DARM_ASM
+	HAVE_NEON = 1
+	PLATCFLAGS += -DARM
 	LDFLAGS += -lrt -ldl
 
 # i.MX6
